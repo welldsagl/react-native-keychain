@@ -303,12 +303,10 @@ RCT_EXPORT_METHOD(setGenericPasswordForOptions:(NSDictionary *)options withUsern
 RCT_EXPORT_METHOD(getGenericPasswordForOptions:(NSDictionary *)options resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 {
   NSString *service = serviceValue(options);
-  NSLog(@"xxx extracting account from options");
   NSString *account = nil;
   if (options) {
     account = options[@"account"];
   }
-  NSLog(@"xxx extracted account: %@", account);
   NSString *authenticationPrompt = @"Authenticate to retrieve secret";
   if (options && options[kAuthenticationPromptMessage]) {
     authenticationPrompt = options[kAuthenticationPromptMessage];
@@ -325,8 +323,7 @@ RCT_EXPORT_METHOD(getGenericPasswordForOptions:(NSDictionary *)options resolver:
 
   NSMutableDictionary *query = [originalQuery mutableCopy];
   if (account != nil) {
-    NSLog(@"xxx query dictionary: %@", [query description]);
-    [query setObject:account forKey:kSecAttrAccount];
+    [query setObject:account forKey:(__bridge id)kSecAttrAccount];
   }
 
   // Look up service in the keychain
